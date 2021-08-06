@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
 
 	// controls annimation loop
-	int close = 0;
+	int close = false;
 
 	// annimation loop
 	while (!close) {
