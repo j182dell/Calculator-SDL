@@ -14,6 +14,7 @@ void infixToPostfix();
 SDL_Texture* createTexture(const char*);
 SDL_Window* win;
 SDL_Renderer* renderer;
+SDL_Rect CreateTextureContainer(SDL_Texture*);
 
 int main(int argc, char* argv[])
 {
@@ -23,16 +24,8 @@ int main(int argc, char* argv[])
 
     //creates Texture from file
     SDL_Texture* tex = createTexture("resources/hello12.png");
-
-    //Create Rectangular container 'h' (height) 'w' (width) you can resize picture by changing it just delete SDL_QueryTexture below which overriding these values,   'x' and 'y' represents upper left corner of rectangle and are used to position rectangle on screen ( example 0,0 very top left of application window )
-    SDL_Rect dest;
-    dest.h = 30;
-    dest.w = 30;
-    dest.x = 0;
-    dest.y = 0;
-
-	//get original picture height and width and save it
-    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+    //creates texture rectangular container from original picture
+    SDL_Rect dest = CreateTextureContainer(tex);
 
 	// controls annimation loop
 	int close = false;
@@ -136,7 +129,7 @@ SDL_Texture* createTexture(const char* file)
 	SDL_FreeSurface(surface);
 
 	return texture;
-};
+}
 
 
 //Function to return precedence of operators
@@ -216,3 +209,19 @@ int prec(char c) {
 	}
 
 	std::cout << result;
+ }
+
+ SDL_Rect CreateTextureContainer(SDL_Texture* texture)
+ {
+    //Create Rectangular container
+    SDL_Rect rectangle;
+    rectangle.h = 0;
+    rectangle.w = 0;
+    rectangle.x = 0;
+    rectangle.y = 0;
+
+	//get texture height and width and save it
+    SDL_QueryTexture(texture, NULL, NULL, &rectangle.w, &rectangle.h);
+
+    return rectangle;
+ }
