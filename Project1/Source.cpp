@@ -91,6 +91,11 @@ int main(int argc, char* argv[])
 
 bool InitialLoad()
 {
+
+	int window_height = 400;
+	int window_width = 200;
+
+
     	// retutns zero on success else non-zero
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("error initializing SDL: %s\n", SDL_GetError());
@@ -98,7 +103,7 @@ bool InitialLoad()
         win = SDL_CreateWindow("GAME", // creates a window
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		400, 200, 0);
+		window_height, window_width, 0);
 
 	// triggers the program that controls
 	// your graphics hardware and sets flags
