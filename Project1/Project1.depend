@@ -1,10 +1,13 @@
 # depslib dependency file v1.0
-1628144675 source:c:\users\majo\documents\github\calculator-sdl\project1\source.cpp
+1628380353 source:c:\users\majo\documents\github\calculator-sdl\project1\source.cpp
 	<stdio.h>
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_timer.h>
 	<SDL_mixer.h>
+	<stack>
+	<iostream>
+	<string>
 
 1627895095 c:\sdl2-2.0.14\include\sdl.h
 	"SDL_main.h"
