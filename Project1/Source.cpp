@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 //prototypes and settings load before main
 //if too much shit here, then move to header file later
 bool InitialLoad(int,int);
@@ -26,18 +28,45 @@ int main(int argc, char* argv[])
     if (!InitialLoad(window_width, window_height))
         printf("Failed loading 'InitialLoad()' function\n");
 
+
+    enum  graphicTexture
+    {
+        background,
+        button_0,
+        button_1,
+        button_2,
+        button_3,
+        button_4,
+        button_5,
+        button_6,
+        button_7,
+        button_8,
+        button_9,
+        texturesTotal
+    };
+    SDL_Texture* graphicTexture[texturesTotal];
+
+
     //creates Texture from file
-    SDL_Texture* gtex_Background = createTexture("resources/brushedmetal.jpg");
-    SDL_Texture* gtex_0_button = createTexture("resources/0.jpg");
-    SDL_Texture* gtex_1_button = createTexture("resources/1.jpg");
-    SDL_Texture* gtex_2_button = createTexture("resources/2.jpg");
-    SDL_Texture* gtex_3_button = createTexture("resources/3.jpg");
-    SDL_Texture* gtex_4_button = createTexture("resources/4.jpg");
-    SDL_Texture* gtex_5_button = createTexture("resources/5.jpg");
-    SDL_Texture* gtex_6_button = createTexture("resources/6.jpg");
-    SDL_Texture* gtex_7_button = createTexture("resources/7.jpg");
-    SDL_Texture* gtex_8_button = createTexture("resources/8.jpg");
-    SDL_Texture* gtex_9_button = createTexture("resources/9.jpg");
+    graphicTexture[background] = createTexture("resources/brushedmetal.jpg");
+    graphicTexture[button_0] = createTexture("resources/0.jpg");
+    graphicTexture[button_1] = createTexture("resources/1.jpg");
+    graphicTexture[button_2] = createTexture("resources/2.jpg");
+    graphicTexture[button_3] = createTexture("resources/3.jpg");
+    graphicTexture[button_4] = createTexture("resources/4.jpg");
+    graphicTexture[button_5] = createTexture("resources/5.jpg");
+    graphicTexture[button_6] = createTexture("resources/6.jpg");
+    graphicTexture[button_7] = createTexture("resources/7.jpg");
+    graphicTexture[button_8] = createTexture("resources/8.jpg");
+    graphicTexture[button_9] = createTexture("resources/9.jpg");
+
+    //check if all textures loaded
+    //Currently not working need to assign NULL for every element in graphic textures
+    for(int i=0; i<texturesTotal; i++)
+    {
+        if (graphicTexture[i]==NULL)
+            cout<<"File #"<<i<<" did not load correctly"<<endl;
+    }
 
     //creates texture rectangular containers
     SDL_Rect dest_Background;
@@ -47,9 +76,9 @@ int main(int argc, char* argv[])
     dest_Background.y = 0;
 
 
-    int all_buttons_width = 60;
-    int all_buttons_height = 60;
-    int spacingbetweencells = 30;
+    int all_buttons_width = 80;
+    int all_buttons_height = 80;
+    int spacingbetweencells = 10;
 
     SDL_Rect dest_1_button;
     dest_1_button.w = all_buttons_width;
@@ -113,7 +142,7 @@ int main(int argc, char* argv[])
 
     //Move all butoons in window - this is used to align
     SDL_Rect all_buttons_anchor;
-    all_buttons_anchor.x = 30;
+    all_buttons_anchor.x = 20;
     all_buttons_anchor.y = 20;
 
     dest_1_button.x += all_buttons_anchor.x;
@@ -184,17 +213,17 @@ int main(int argc, char* argv[])
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
         //Copy new or updated pictures into screen
-        SDL_RenderCopy(renderer, gtex_Background, NULL, &dest_Background);
-        SDL_RenderCopy(renderer, gtex_0_button, NULL, &dest_0_button);
-        SDL_RenderCopy(renderer, gtex_1_button, NULL, &dest_1_button);
-        SDL_RenderCopy(renderer, gtex_2_button, NULL, &dest_2_button);
-        SDL_RenderCopy(renderer, gtex_3_button, NULL, &dest_3_button);
-        SDL_RenderCopy(renderer, gtex_4_button, NULL, &dest_4_button);
-        SDL_RenderCopy(renderer, gtex_5_button, NULL, &dest_5_button);
-        SDL_RenderCopy(renderer, gtex_6_button, NULL, &dest_6_button);
-        SDL_RenderCopy(renderer, gtex_7_button, NULL, &dest_7_button);
-        SDL_RenderCopy(renderer, gtex_8_button, NULL, &dest_8_button);
-        SDL_RenderCopy(renderer, gtex_9_button, NULL, &dest_9_button);
+        SDL_RenderCopy(renderer, graphicTexture[background], NULL, &dest_Background);
+        SDL_RenderCopy(renderer, graphicTexture[button_0], NULL, &dest_0_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_1], NULL, &dest_1_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_2], NULL, &dest_2_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_3], NULL, &dest_3_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_4], NULL, &dest_4_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_5], NULL, &dest_5_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_6], NULL, &dest_6_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_7], NULL, &dest_7_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_8], NULL, &dest_8_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_9], NULL, &dest_9_button);
 
 
         // triggers the double buffers
@@ -205,18 +234,9 @@ int main(int argc, char* argv[])
         SDL_Delay(1000 / 60);
     }
 
-    // destroy texture
-    SDL_DestroyTexture(gtex_Background);
-    SDL_DestroyTexture(gtex_0_button);
-    SDL_DestroyTexture(gtex_1_button);
-    SDL_DestroyTexture(gtex_2_button);
-    SDL_DestroyTexture(gtex_3_button);
-    SDL_DestroyTexture(gtex_4_button);
-    SDL_DestroyTexture(gtex_5_button);
-    SDL_DestroyTexture(gtex_6_button);
-    SDL_DestroyTexture(gtex_7_button);
-    SDL_DestroyTexture(gtex_8_button);
-    SDL_DestroyTexture(gtex_9_button);
+    // destroy textures
+    for(int i=0; i<texturesTotal; i++)
+        SDL_DestroyTexture(graphicTexture[i]);
 
     // destroy renderer
     SDL_DestroyRenderer(renderer);
@@ -372,3 +392,5 @@ SDL_Rect CreateContainerFromTexture(SDL_Texture* texture, int x, int y)
 
     return rectangle;
 }
+
+
