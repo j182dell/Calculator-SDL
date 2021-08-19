@@ -113,14 +113,13 @@ int main(int argc, char* argv[])
     }
 
 
-
     //Move all butoons in window - this is used to align
-    SDL_Rect all_buttons_anchor;
-    all_buttons_anchor.x = 20;
-    all_buttons_anchor.y = 20;
-
-    for(int i=0;i<texturesTotal;i++)
+    for(int i=0; i<texturesTotal; i++)
     {
+        SDL_Rect all_buttons_anchor;
+        all_buttons_anchor.x = 20;
+        all_buttons_anchor.y = 20;
+
         dest_button[i].x += all_buttons_anchor.x;
         dest_button[i].y += all_buttons_anchor.y;
 
