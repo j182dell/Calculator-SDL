@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
         button_9,
         texturesTotal
     };
+
     SDL_Texture* graphicTexture[texturesTotal];
 
 
@@ -80,92 +81,50 @@ int main(int argc, char* argv[])
     int all_buttons_height = 80;
     int spacingbetweencells = 10;
 
-    SDL_Rect dest_1_button;
-    dest_1_button.w = all_buttons_width;
-    dest_1_button.h = all_buttons_height;
-    dest_1_button.x = 0;
-    dest_1_button.y = 0;
 
-    SDL_Rect dest_2_button;
-    dest_2_button.w = all_buttons_width;
-    dest_2_button.h = all_buttons_height;
-    dest_2_button.x = dest_1_button.w+spacingbetweencells;
-    dest_2_button.y = 0;
+    //create as many containers as textures
+    SDL_Rect  dest_button[texturesTotal];
 
-    SDL_Rect dest_3_button;
-    dest_3_button.w = all_buttons_width;
-    dest_3_button.h = all_buttons_height;
-    dest_3_button.x = dest_2_button.x+dest_1_button.w+spacingbetweencells;
-    dest_3_button.y = 0;
+    for(int i=0;i<texturesTotal;i++)
+    {
+        //set all buttons dimensions
+        dest_button[i].w = all_buttons_width;
+        dest_button[i].h = all_buttons_height;
+        //set default values just in case, change it in function below
+        dest_button[i].x = 0;
+        dest_button[i].y = 0;
 
-    SDL_Rect dest_4_button;
-    dest_4_button.w = all_buttons_width;
-    dest_4_button.h = all_buttons_height;
-    dest_4_button.x = 0;
-    dest_4_button.y = dest_1_button.h+spacingbetweencells;
 
-    SDL_Rect dest_5_button;
-    dest_5_button.w = all_buttons_width;
-    dest_5_button.h = all_buttons_height;
-    dest_5_button.x = dest_1_button.w+spacingbetweencells;
-    dest_5_button.y = dest_1_button.h+spacingbetweencells;
+        //NEED COMPLETE THIS:
 
-    SDL_Rect dest_6_button;
-    dest_6_button.w = all_buttons_width;
-    dest_6_button.h = all_buttons_height;
-    dest_6_button.x = dest_5_button.x+dest_1_button.w+spacingbetweencells;
-    dest_6_button.y = dest_1_button.h+spacingbetweencells;
+        //pictures in rows 3
+        for(int r=0; r<3;r++)
+        {
 
-    SDL_Rect dest_7_button;
-    dest_7_button.w = all_buttons_width;
-    dest_7_button.h = all_buttons_height;
-    dest_7_button.x = 0;
-    dest_7_button.y = dest_4_button.y+dest_1_button.h+spacingbetweencells;
+        }
 
-    SDL_Rect dest_8_button;
-    dest_8_button.w = all_buttons_width;
-    dest_8_button.h = all_buttons_height;
-    dest_8_button.x = dest_1_button.w+spacingbetweencells;
-    dest_8_button.y = dest_4_button.y+dest_1_button.h+spacingbetweencells;
+        //pictures in collumns 3
+        for(int c=0; c<3;c++)
+        {
 
-    SDL_Rect dest_9_button;
-    dest_9_button.w = all_buttons_width;
-    dest_9_button.h = all_buttons_height;
-    dest_9_button.x = dest_2_button.x+dest_1_button.w+spacingbetweencells;
-    dest_9_button.y = dest_4_button.y+dest_1_button.h+spacingbetweencells;
+        }
 
-    SDL_Rect dest_0_button;
-    dest_0_button.w = all_buttons_width;
-    dest_0_button.h = all_buttons_height;
-    dest_0_button.x = dest_1_button.w+spacingbetweencells;
-    dest_0_button.y = dest_7_button.y+dest_1_button.h+spacingbetweencells;
+
+    }
+
+
 
     //Move all butoons in window - this is used to align
     SDL_Rect all_buttons_anchor;
     all_buttons_anchor.x = 20;
     all_buttons_anchor.y = 20;
 
-    dest_1_button.x += all_buttons_anchor.x;
-    dest_2_button.x += all_buttons_anchor.x;
-    dest_3_button.x += all_buttons_anchor.x;
-    dest_4_button.x += all_buttons_anchor.x;
-    dest_5_button.x += all_buttons_anchor.x;
-    dest_6_button.x += all_buttons_anchor.x;
-    dest_7_button.x += all_buttons_anchor.x;
-    dest_8_button.x += all_buttons_anchor.x;
-    dest_9_button.x += all_buttons_anchor.x;
-    dest_0_button.x += all_buttons_anchor.x;
+    for(int i=0;i<texturesTotal;i++)
+    {
+        dest_button[i].x += all_buttons_anchor.x;
+        dest_button[i].y += all_buttons_anchor.y;
 
-    dest_1_button.y += all_buttons_anchor.y;
-    dest_2_button.y += all_buttons_anchor.y;
-    dest_3_button.y += all_buttons_anchor.y;
-    dest_4_button.y += all_buttons_anchor.y;
-    dest_5_button.y += all_buttons_anchor.y;
-    dest_6_button.y += all_buttons_anchor.y;
-    dest_7_button.y += all_buttons_anchor.y;
-    dest_8_button.y += all_buttons_anchor.y;
-    dest_9_button.y += all_buttons_anchor.y;
-    dest_0_button.y += all_buttons_anchor.y;
+    }
 
 
 
@@ -214,16 +173,16 @@ int main(int argc, char* argv[])
 
         //Copy new or updated pictures into screen
         SDL_RenderCopy(renderer, graphicTexture[background], NULL, &dest_Background);
-        SDL_RenderCopy(renderer, graphicTexture[button_0], NULL, &dest_0_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_1], NULL, &dest_1_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_2], NULL, &dest_2_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_3], NULL, &dest_3_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_4], NULL, &dest_4_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_5], NULL, &dest_5_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_6], NULL, &dest_6_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_7], NULL, &dest_7_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_8], NULL, &dest_8_button);
-        SDL_RenderCopy(renderer, graphicTexture[button_9], NULL, &dest_9_button);
+        SDL_RenderCopy(renderer, graphicTexture[button_0], NULL, &dest_button[0]);
+        SDL_RenderCopy(renderer, graphicTexture[button_1], NULL, &dest_button[1]);
+        SDL_RenderCopy(renderer, graphicTexture[button_2], NULL, &dest_button[2]);
+        SDL_RenderCopy(renderer, graphicTexture[button_3], NULL, &dest_button[3]);
+        SDL_RenderCopy(renderer, graphicTexture[button_4], NULL, &dest_button[4]);
+        SDL_RenderCopy(renderer, graphicTexture[button_5], NULL, &dest_button[5]);
+        SDL_RenderCopy(renderer, graphicTexture[button_6], NULL, &dest_button[6]);
+        SDL_RenderCopy(renderer, graphicTexture[button_7], NULL, &dest_button[7]);
+        SDL_RenderCopy(renderer, graphicTexture[button_8], NULL, &dest_button[8]);
+        SDL_RenderCopy(renderer, graphicTexture[button_9], NULL, &dest_button[9]);
 
 
         // triggers the double buffers
