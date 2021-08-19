@@ -6,38 +6,33 @@
 #include <stack>
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <iterator>
+
 
 //prototypes and settings load before main
 //if too much shit here, then move to header file later
 bool InitialLoad(int,int);
 void infixToPostfix();
+bool button_process_event(int, int, int, int);
 SDL_Texture* createTexture(const char*);
 SDL_Window* win;
 SDL_Renderer* renderer;
-SDL_Rect CreateContainerFromTexture(SDL_Texture*,int x=0,int y=0);
+//SDL_Rect CreateContainerFromTexture(SDL_Texture*,int x=0,int y=0);
 
 int main(int argc, char* argv[])
 {
+
     //Set window dimensions
-    int window_height = 400;
-    int window_width = 300;
+    int window_height = 690;
+    int window_width = 552;
 
     //Set up graphics, audio, inputs etc.
     if (!InitialLoad(window_width, window_height))
         printf("Failed loading 'InitialLoad()' function\n");
 
     //creates Texture from file
-    SDL_Texture* gtex_Background = createTexture("resources/brushedmetal.jpg");
-    SDL_Texture* gtex_0_button = createTexture("resources/0.jpg");
-    SDL_Texture* gtex_1_button = createTexture("resources/1.jpg");
-    SDL_Texture* gtex_2_button = createTexture("resources/2.jpg");
-    SDL_Texture* gtex_3_button = createTexture("resources/3.jpg");
-    SDL_Texture* gtex_4_button = createTexture("resources/4.jpg");
-    SDL_Texture* gtex_5_button = createTexture("resources/5.jpg");
-    SDL_Texture* gtex_6_button = createTexture("resources/6.jpg");
-    SDL_Texture* gtex_7_button = createTexture("resources/7.jpg");
-    SDL_Texture* gtex_8_button = createTexture("resources/8.jpg");
-    SDL_Texture* gtex_9_button = createTexture("resources/9.jpg");
+    SDL_Texture* gtex_Background = createTexture("resources/calcimg.jpg");
 
     //creates texture rectangular containers
     SDL_Rect dest_Background;
@@ -46,111 +41,25 @@ int main(int argc, char* argv[])
     dest_Background.x = 0;
     dest_Background.y = 0;
 
-
-    int all_buttons_width = 60;
-    int all_buttons_height = 60;
-    int spacingbetweencells = 30;
-
-    SDL_Rect dest_1_button;
-    dest_1_button.w = all_buttons_width;
-    dest_1_button.h = all_buttons_height;
-    dest_1_button.x = 0;
-    dest_1_button.y = 0;
-
-    SDL_Rect dest_2_button;
-    dest_2_button.w = all_buttons_width;
-    dest_2_button.h = all_buttons_height;
-    dest_2_button.x = dest_1_button.w+spacingbetweencells;
-    dest_2_button.y = 0;
-
-    SDL_Rect dest_3_button;
-    dest_3_button.w = all_buttons_width;
-    dest_3_button.h = all_buttons_height;
-    dest_3_button.x = dest_2_button.x+dest_1_button.w+spacingbetweencells;
-    dest_3_button.y = 0;
-
-    SDL_Rect dest_4_button;
-    dest_4_button.w = all_buttons_width;
-    dest_4_button.h = all_buttons_height;
-    dest_4_button.x = 0;
-    dest_4_button.y = dest_1_button.h+spacingbetweencells;
-
-    SDL_Rect dest_5_button;
-    dest_5_button.w = all_buttons_width;
-    dest_5_button.h = all_buttons_height;
-    dest_5_button.x = dest_1_button.w+spacingbetweencells;
-    dest_5_button.y = dest_1_button.h+spacingbetweencells;
-
-    SDL_Rect dest_6_button;
-    dest_6_button.w = all_buttons_width;
-    dest_6_button.h = all_buttons_height;
-    dest_6_button.x = dest_5_button.x+dest_1_button.w+spacingbetweencells;
-    dest_6_button.y = dest_1_button.h+spacingbetweencells;
-
-    SDL_Rect dest_7_button;
-    dest_7_button.w = all_buttons_width;
-    dest_7_button.h = all_buttons_height;
-    dest_7_button.x = 0;
-    dest_7_button.y = dest_4_button.y+dest_1_button.h+spacingbetweencells;
-
-    SDL_Rect dest_8_button;
-    dest_8_button.w = all_buttons_width;
-    dest_8_button.h = all_buttons_height;
-    dest_8_button.x = dest_1_button.w+spacingbetweencells;
-    dest_8_button.y = dest_4_button.y+dest_1_button.h+spacingbetweencells;
-
-    SDL_Rect dest_9_button;
-    dest_9_button.w = all_buttons_width;
-    dest_9_button.h = all_buttons_height;
-    dest_9_button.x = dest_2_button.x+dest_1_button.w+spacingbetweencells;
-    dest_9_button.y = dest_4_button.y+dest_1_button.h+spacingbetweencells;
-
-    SDL_Rect dest_0_button;
-    dest_0_button.w = all_buttons_width;
-    dest_0_button.h = all_buttons_height;
-    dest_0_button.x = dest_1_button.w+spacingbetweencells;
-    dest_0_button.y = dest_7_button.y+dest_1_button.h+spacingbetweencells;
-
-    //Move all butoons in window - this is used to align
-    SDL_Rect all_buttons_anchor;
-    all_buttons_anchor.x = 30;
-    all_buttons_anchor.y = 20;
-
-    dest_1_button.x += all_buttons_anchor.x;
-    dest_2_button.x += all_buttons_anchor.x;
-    dest_3_button.x += all_buttons_anchor.x;
-    dest_4_button.x += all_buttons_anchor.x;
-    dest_5_button.x += all_buttons_anchor.x;
-    dest_6_button.x += all_buttons_anchor.x;
-    dest_7_button.x += all_buttons_anchor.x;
-    dest_8_button.x += all_buttons_anchor.x;
-    dest_9_button.x += all_buttons_anchor.x;
-    dest_0_button.x += all_buttons_anchor.x;
-
-    dest_1_button.y += all_buttons_anchor.y;
-    dest_2_button.y += all_buttons_anchor.y;
-    dest_3_button.y += all_buttons_anchor.y;
-    dest_4_button.y += all_buttons_anchor.y;
-    dest_5_button.y += all_buttons_anchor.y;
-    dest_6_button.y += all_buttons_anchor.y;
-    dest_7_button.y += all_buttons_anchor.y;
-    dest_8_button.y += all_buttons_anchor.y;
-    dest_9_button.y += all_buttons_anchor.y;
-    dest_0_button.y += all_buttons_anchor.y;
-
-
-
     // controls annimation loop
     int close = false;
+
+    std::string answer_output = ("");
 
     // annimation loop
     while (!close)
     {
+
         SDL_Event event;
 
         // Events management
         while (SDL_PollEvent(&event))
         {
+
+            int mouse_x = event.button.x;
+            int mouse_y = event.button.y;
+            
+
             switch (event.type)
             {
 
@@ -159,15 +68,119 @@ int main(int argc, char* argv[])
                 close = 1;
                 break;
 
+            case SDL_MOUSEBUTTONDOWN:
+
+               
+
+                /*  
+                    x1 = 0
+                    x2 = 138
+
+                    Button C: y1 = 0, y2 = 138
+                    Button 7: y1 = 138, y2 = 276
+                    Button 4: y1 = 276, y2 = 414
+                    Button 1: y1 = 414, y2 = 552
+                    Button 0: y1 = 552, y2 = 690
+                */
+                if (mouse_x >= 0 && mouse_x <= 138) {
+                    if (mouse_y >= 0 && mouse_y <= 138) {
+                        std::cout << "C" << std::endl;
+                    }
+                    else if (mouse_y >= 138 && mouse_y <= 276) {
+                        answer_output += '7';
+                    }
+                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                        answer_output += '4';
+                    }
+                    else if (mouse_y >= 414 && mouse_y <= 552) {
+                        answer_output += '1';
+                    }
+                    else if (mouse_y >= 552 && mouse_y <= 690) {
+                        answer_output += '0';
+                    }
+                }
+
+                /*
+                    x1 = 138
+                    x2 = 276
+
+                    Button 8: y1 = 138, y2 = 276
+                    Button 5: y1 = 276, y2 = 414
+                    Button 2: y1 = 414, y2 = 552
+                */
+                else if (mouse_x >= 138 && mouse_x <= 276) {
+                    if (mouse_y >= 138 && mouse_y <= 276) {
+                        answer_output += '8';
+                    }
+                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                        answer_output += '5';
+                    }
+                    else if (mouse_y >= 414 && mouse_y <= 552) {
+                        answer_output += '2';
+                    }
+                }
+
+                /*
+                    x1 = 276
+                    x2 = 414
+
+                    Button 9: y1 = 138, y2 = 276
+                    Button 6: y1 = 276, y2 = 414
+                    Button 3: y1 = 414, y2 = 552
+                */
+                else if (mouse_x >= 276 && mouse_x <= 414) {
+                    if (mouse_y >= 138 && mouse_y <= 276) {
+                        answer_output += '9';
+                    }
+                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                        answer_output += '6';
+                    }
+                    if (mouse_y >= 414 && mouse_y <= 552) {
+                        answer_output += '3';
+                    }
+                }
+
+                /*
+                   x1 = 414
+                   x2 = 552
+
+                   Button /: y1 = 0, y2 = 138
+                   Button X: y1 = 138, y2 = 276
+                   Button -: y1 = 276, y2 = 414
+                   Button +: y1 = 414, y2 = 552
+                   Button =: y1 = 552, y2 = 690
+               */
+                else if (mouse_x >= 414 && mouse_x <= 552) {
+                    if (mouse_y >= 0 && mouse_y <= 138) {
+                        answer_output += '/';
+                    }
+                    else if (mouse_y >= 138 && mouse_y <= 276) {
+                        answer_output += 'x';
+                    }
+                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                        answer_output += '-';
+                    }
+                    else if (mouse_y >= 414 && mouse_y <= 552) {
+                        answer_output += '+';
+                    }
+                    
+                }
+
+                if (mouse_x >= 414 && mouse_x <= 552 && mouse_y >= 552 && mouse_y <= 690) {
+                    std::cout << answer_output << std::endl;
+                }
+                
+
             case SDL_KEYDOWN:
+
                 // keyboard API for key pressed
                 switch (event.key.keysym.scancode)
                 {
-                //Hit Esc for quit application
+                    //Hit Esc for quit application
                 case SDL_SCANCODE_ESCAPE:
                     close = 1;
                     break;
-                //My own convinience for testing
+                    //My own convinience for testing
                 case SDL_SCANCODE_F10:
                     close = 1;
                     break;
@@ -176,6 +189,8 @@ int main(int argc, char* argv[])
                     break;
                 }
             }
+
+            
         }
 
 
@@ -185,16 +200,6 @@ int main(int argc, char* argv[])
 
         //Copy new or updated pictures into screen
         SDL_RenderCopy(renderer, gtex_Background, NULL, &dest_Background);
-        SDL_RenderCopy(renderer, gtex_0_button, NULL, &dest_0_button);
-        SDL_RenderCopy(renderer, gtex_1_button, NULL, &dest_1_button);
-        SDL_RenderCopy(renderer, gtex_2_button, NULL, &dest_2_button);
-        SDL_RenderCopy(renderer, gtex_3_button, NULL, &dest_3_button);
-        SDL_RenderCopy(renderer, gtex_4_button, NULL, &dest_4_button);
-        SDL_RenderCopy(renderer, gtex_5_button, NULL, &dest_5_button);
-        SDL_RenderCopy(renderer, gtex_6_button, NULL, &dest_6_button);
-        SDL_RenderCopy(renderer, gtex_7_button, NULL, &dest_7_button);
-        SDL_RenderCopy(renderer, gtex_8_button, NULL, &dest_8_button);
-        SDL_RenderCopy(renderer, gtex_9_button, NULL, &dest_9_button);
 
 
         // triggers the double buffers
@@ -207,16 +212,6 @@ int main(int argc, char* argv[])
 
     // destroy texture
     SDL_DestroyTexture(gtex_Background);
-    SDL_DestroyTexture(gtex_0_button);
-    SDL_DestroyTexture(gtex_1_button);
-    SDL_DestroyTexture(gtex_2_button);
-    SDL_DestroyTexture(gtex_3_button);
-    SDL_DestroyTexture(gtex_4_button);
-    SDL_DestroyTexture(gtex_5_button);
-    SDL_DestroyTexture(gtex_6_button);
-    SDL_DestroyTexture(gtex_7_button);
-    SDL_DestroyTexture(gtex_8_button);
-    SDL_DestroyTexture(gtex_9_button);
 
     // destroy renderer
     SDL_DestroyRenderer(renderer);
@@ -254,6 +249,11 @@ bool InitialLoad(int window_width, int window_height)
 
 void infixToPostfix()
 {
+}
+
+int button_press_event()
+{
+    return 0;
 }
 
 SDL_Texture* createTexture(const char* file)
@@ -358,17 +358,19 @@ void infixToPostfix(std::string s)
     std::cout << result;
 }
 
-SDL_Rect CreateContainerFromTexture(SDL_Texture* texture, int x, int y)
-{
-    //Create Rectangular container
-    SDL_Rect rectangle;
-    rectangle.w = 0;
-    rectangle.h = 0;
-    rectangle.x = x;
-    rectangle.y = y;
+bool button_process_event(int buttoncordx, int buttoncordy, int destbuttonx, int destbuttony) {
+    // react on mouse click within button range
 
-    //get texture height and width and save it
-    SDL_QueryTexture(texture, NULL, NULL, &rectangle.w, &rectangle.h);
+    int all_buttons_width = 60;
+    int all_buttons_height = 60;
 
-    return rectangle;
+    if (buttoncordx >= destbuttonx + 30 && buttoncordx <= destbuttonx + all_buttons_width + 30 &&
+        buttoncordy >= destbuttony + 20 && buttoncordy <= destbuttony + all_buttons_height + 20)
+    {
+        return true;
+
+    }
+    else {
+        return false;
+    }
 }
