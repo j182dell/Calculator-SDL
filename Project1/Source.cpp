@@ -14,7 +14,6 @@
 //if too much shit here, then move to header file later
 bool InitialLoad(int, int);
 void infixToPostfix();
-bool button_process_event(int, int, int, int);
 SDL_Texture* createTexture(const char*);
 SDL_Window* win;
 SDL_Renderer* renderer;
@@ -70,8 +69,6 @@ int main(int argc, char* argv[])
 
             case SDL_MOUSEBUTTONDOWN:
 
-
-
                 /*
                     x1 = 0
                     x2 = 138
@@ -83,19 +80,24 @@ int main(int argc, char* argv[])
                 */
                 if (mouse_x >= 0 && mouse_x <= 138) {
                     if (mouse_y >= 0 && mouse_y <= 138) {
-                        std::cout << "C" << std::endl;
+                        answer_output = "";
+                        std::cout << std::endl;
                     }
                     else if (mouse_y >= 138 && mouse_y <= 276) {
                         answer_output += '7';
+                        std::cout << '7';
                     }
                     else if (mouse_y >= 276 && mouse_y <= 414) {
                         answer_output += '4';
+                        std::cout << '4';
                     }
                     else if (mouse_y >= 414 && mouse_y <= 552) {
                         answer_output += '1';
+                        std::cout << '1';
                     }
                     else if (mouse_y >= 552 && mouse_y <= 690) {
                         answer_output += '0';
+                        std::cout << '0';
                     }
                 }
 
@@ -109,12 +111,15 @@ int main(int argc, char* argv[])
                 else if (mouse_x >= 138 && mouse_x <= 276) {
                     if (mouse_y >= 138 && mouse_y <= 276) {
                         answer_output += '8';
+                        std::cout << '8';
                     }
                     else if (mouse_y >= 276 && mouse_y <= 414) {
                         answer_output += '5';
+                        std::cout << '5';
                     }
                     else if (mouse_y >= 414 && mouse_y <= 552) {
                         answer_output += '2';
+                        std::cout << '2';
                     }
                 }
 
@@ -128,12 +133,15 @@ int main(int argc, char* argv[])
                 else if (mouse_x >= 276 && mouse_x <= 414) {
                     if (mouse_y >= 138 && mouse_y <= 276) {
                         answer_output += '9';
+                        std::cout << '9';
                     }
                     else if (mouse_y >= 276 && mouse_y <= 414) {
                         answer_output += '6';
+                        std::cout << '6';
                     }
                     if (mouse_y >= 414 && mouse_y <= 552) {
                         answer_output += '3';
+                        std::cout << '3';
                     }
                 }
 
@@ -149,21 +157,26 @@ int main(int argc, char* argv[])
                 else if (mouse_x >= 414 && mouse_x <= 552) {
                     if (mouse_y >= 0 && mouse_y <= 138) {
                         answer_output += '/';
+                        std::cout << " / ";
                     }
                     else if (mouse_y >= 138 && mouse_y <= 276) {
                         answer_output += 'x';
+                        std::cout << " x ";
                     }
                     else if (mouse_y >= 276 && mouse_y <= 414) {
                         answer_output += '-';
+                        std::cout << " - ";
                     }
                     else if (mouse_y >= 414 && mouse_y <= 552) {
                         answer_output += '+';
+                        std::cout << " + ";
                     }
 
                 }
 
                 if (mouse_x >= 414 && mouse_x <= 552 && mouse_y >= 552 && mouse_y <= 690) {
-                    std::cout << answer_output << std::endl;
+                    std::cout << std::endl << answer_output << std::endl;
+                    answer_output = "";
                 }
 
 
@@ -352,21 +365,4 @@ void infixToPostfix(std::string s)
     }
 
     std::cout << result;
-}
-
-bool button_process_event(int buttoncordx, int buttoncordy, int destbuttonx, int destbuttony) {
-    // react on mouse click within button range
-
-    int all_buttons_width = 60;
-    int all_buttons_height = 60;
-
-    if (buttoncordx >= destbuttonx + 30 && buttoncordx <= destbuttonx + all_buttons_width + 30 &&
-        buttoncordy >= destbuttony + 20 && buttoncordy <= destbuttony + all_buttons_height + 20)
-    {
-        return true;
-
-    }
-    else {
-        return false;
-    }
 }
