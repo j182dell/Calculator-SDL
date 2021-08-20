@@ -17,7 +17,6 @@ void infixToPostfix();
 SDL_Texture* createTexture(const char*);
 SDL_Window* win;
 SDL_Renderer* renderer;
-//SDL_Rect CreateContainerFromTexture(SDL_Texture*,int x=0,int y=0);
 
 int main(int argc, char* argv[])
 {
@@ -241,7 +240,7 @@ bool InitialLoad(int window_width, int window_height)
     {
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
-    win = SDL_CreateWindow("GAME", // creates a window
+    win = SDL_CreateWindow("Calculator", // creates a window
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         window_width, window_height, 0);
@@ -258,11 +257,6 @@ bool InitialLoad(int window_width, int window_height)
 
 void infixToPostfix()
 {
-}
-
-int button_press_event()
-{
-    return 0;
 }
 
 SDL_Texture* createTexture(const char* file)
