@@ -6,38 +6,126 @@
 #include <stack>
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <iterator>
 
+using namespace std;
 
 //prototypes and settings load before main
 //if too much shit here, then move to header file later
-bool InitialLoad(int, int);
+bool InitialLoad(int,int);
 void infixToPostfix();
 SDL_Texture* createTexture(const char*);
 SDL_Window* win;
 SDL_Renderer* renderer;
+SDL_Rect CreateContainerFromTexture(SDL_Texture*,int x=0,int y=0);
+int prec(char);
 
 int main(int argc, char* argv[])
 {
-
     //Set window dimensions
-    int window_height = 690;
-    int window_width = 552;
+    int window_height = 400;
+    int window_width = 300;
 
     //Set up graphics, audio, inputs etc.
     if (!InitialLoad(window_width, window_height))
         printf("Failed loading 'InitialLoad()' function\n");
 
-    //creates Texture from file
-    SDL_Texture* gtex_Background = createTexture("resources/calcimg.jpg");
 
-    //creates texture rectangular containers
-    SDL_Rect dest_Background;
+    enum  graphicTexture
+    {
+        background,
+        /*button_0,
+        button_1,
+        button_2,
+        button_3,
+        button_4,
+        button_5,
+        button_6,
+        button_7,
+        button_8,
+        button_9,*/
+        texturesTotal
+    };
+
+    SDL_Texture* graphicTexture[texturesTotal];
+
+    for(int i=0; i<texturesTotal; i++)
+        graphicTexture[i] = nullptr;
+
+
+    //creates Texture from file
+    graphicTexture[background] = createTexture("resources/calcimg.jpg");
+    /*graphicTexture[button_0] = createTexture("");
+    graphicTexture[button_1] = createTexture("");
+    graphicTexture[button_2] = createTexture("");
+    graphicTexture[button_3] = createTexture("");
+    graphicTexture[button_4] = createTexture("");
+    graphicTexture[button_5] = createTexture("");
+    graphicTexture[button_6] = createTexture("");
+    graphicTexture[button_7] = createTexture("");
+    graphicTexture[button_8] = createTexture("");
+    graphicTexture[button_9] = createTexture("");*/
+
+    //check if all textures loaded
+    //Currently not working need to assign NULL for every element in graphic textures
+    for(int i=0; i<texturesTotal; i++)
+    {
+        if (graphicTexture[i]==NULL)
+            cout<<"File #"<<i<<" did not load correctly"<<endl;
+    }
+
+    //creates texture rectangular containers -- destination copy entire texture into this container
+    SDL_Rect dest_Background = CreateContainerFromTexture(graphicTexture[background]);
     dest_Background.w = window_width;
     dest_Background.h = window_height;
-    dest_Background.x = 0;
-    dest_Background.y = 0;
+
+    //creates texture rectangular containers -- source copy part of texture into this container
+    SDL_Rect src_Background = CreateContainerFromTexture(graphicTexture[background]);
+
+
+    int buttons_total = 20;
+    int src_button_width = src_Background.w / 4;
+    int src_button_height = src_Background.h / 5;
+    int dst_button_width = window_width / 4;
+    int dst_button_height = window_height / 5;
+    SDL_Rect src[buttons_total];
+    SDL_Rect dst[buttons_total];
+
+    //set button dimensions and default coordinates
+    for (int i=0; i<buttons_total; i++)
+    {
+        src[i].w = src_button_width;
+        src[i].h = src_button_height;
+        src[i].x = 0;
+        src[i].y = 0;
+
+        dst[i].w = dst_button_width;
+        dst[i].h = dst_button_height;
+        dst[i].x = 0;
+        dst[i].y = 0;
+    }
+
+    //set button coordinates
+    for(int i=1, r=1, c=0; i<buttons_total; i++ )
+    {
+        src[i].x = src_button_width*r;
+        dst[i].x = dst_button_width*r;
+        src[i].y = src_button_height*c;
+        dst[i].y = dst_button_height*c;
+
+        if (r>3)
+        {
+            r = 0;
+            c++;
+        }
+        else r++;
+
+        cout<<src[i].x<<endl;
+        cout<<src[i].y<<endl;
+        cout<<"-------------"<<endl;
+    }
+
+
+
 
     // controls annimation loop
     int close = false;
@@ -207,7 +295,17 @@ int main(int argc, char* argv[])
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
         //Copy new or updated pictures into screen
-        SDL_RenderCopy(renderer, gtex_Background, NULL, &dest_Background);
+        //SDL_RenderCopy(renderer, graphicTexture[background], NULL, &dest_Background); //turn on for testing
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[0], &dst[0]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[1], &dst[1]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[2], &dst[2]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[3], &dst[3]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[4], &dst[4]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[5], &dst[5]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[6], &dst[6]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[7], &dst[7]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[8], &dst[8]);
+        SDL_RenderCopy(renderer, graphicTexture[background], &src[9], &dst[9]);
 
 
         // triggers the double buffers
@@ -218,8 +316,9 @@ int main(int argc, char* argv[])
         SDL_Delay(1000 / 60);
     }
 
-    // destroy texture
-    SDL_DestroyTexture(gtex_Background);
+    // destroy textures
+    for(int i=0; i<texturesTotal; i++)
+        SDL_DestroyTexture(graphicTexture[i]);
 
     // destroy renderer
     SDL_DestroyRenderer(renderer);
@@ -240,10 +339,10 @@ bool InitialLoad(int window_width, int window_height)
     {
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
-    win = SDL_CreateWindow("Calculator", // creates a window
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        window_width, window_height, 0);
+    win = SDL_CreateWindow("GAME", // creates a window
+                           SDL_WINDOWPOS_CENTERED,
+                           SDL_WINDOWPOS_CENTERED,
+                           window_width, window_height, 0);
 
     // triggers the program that controls
     // your graphics hardware and sets flags
@@ -312,13 +411,13 @@ void infixToPostfix(std::string s)
             result += '%';
 
         // If the scanned character is an
-        // (, push it to the stack.
+        // ‘(‘, push it to the stack.
         else if (c == '(')
             st.push('(');
 
-        // If the scanned character is an ),
+        // If the scanned character is an ‘)’,
         // pop and to output string from the stack
-        // until an ( is encountered.
+        // until an ‘(‘ is encountered.
         else if (c == ')')
         {
             while (st.top() != '(')
@@ -360,3 +459,19 @@ void infixToPostfix(std::string s)
 
     std::cout << result;
 }
+
+SDL_Rect CreateContainerFromTexture(SDL_Texture* texture, int x, int y)
+{
+    //Create Rectangular container
+    SDL_Rect rectangle;
+    rectangle.w = 0;
+    rectangle.h = 0;
+    rectangle.x = x;
+    rectangle.y = y;
+
+    //get texture height and width and save it
+    SDL_QueryTexture(texture, NULL, NULL, &rectangle.w, &rectangle.h);
+
+    return rectangle;
+}
+
