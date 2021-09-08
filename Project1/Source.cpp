@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
     // controls annimation loop
     int close = false;
 
-    cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyright Winc***n Ltd, all rights reserved"<<endl<<endl<<"\t>\r\t";
+    cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyrighted, all rights reserved"<<endl<<endl<<"\t>\r\t";
     std::string answer_output = ("");
 
     // annimation loop
@@ -157,9 +157,10 @@ int main(int argc, char* argv[])
                 if (mouse_x >= 0 && mouse_x <= dst_button_width) {
                     if (mouse_y >= 0 && mouse_y <= dst_button_height) {
                         //flush screen and clear answer_output
+                        display_highl_pict = 0;
                         answer_output += "";
                         system ("CLS");
-                        cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyright Winc***n Ltd, all rights reserved"<<endl<<endl<<"\t>\r\t";
+                        cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyrighted, all rights reserved"<<endl<<endl<<"\t>\r\t";
 
                     }
                     else if (mouse_y >= dst_button_height && mouse_y <= dst_button_height*2) {
@@ -348,7 +349,7 @@ bool InitialLoad(int window_width, int window_height)
     {
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
-    win = SDL_CreateWindow("GAME", // creates a window
+    win = SDL_CreateWindow("CalCoolator 3000", // creates a window
                            SDL_WINDOWPOS_CENTERED,
                            SDL_WINDOWPOS_CENTERED,
                            window_width, window_height, 0);
