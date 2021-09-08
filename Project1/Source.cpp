@@ -33,8 +33,8 @@ int main(int argc, char* argv[])
     enum  graphicTexture
     {
         background,
-        /*button_0,
-        button_1,
+        background2,
+        /*button_1,
         button_2,
         button_3,
         button_4,
@@ -54,8 +54,8 @@ int main(int argc, char* argv[])
 
     //creates Texture from file
     graphicTexture[background] = createTexture("resources/calcimg.jpg");
-    /*graphicTexture[button_0] = createTexture("");
-    graphicTexture[button_1] = createTexture("");
+    graphicTexture[background2] = createTexture("resources/calcimg-highlight.jpg");
+    /*graphicTexture[button_1] = createTexture("");
     graphicTexture[button_2] = createTexture("");
     graphicTexture[button_3] = createTexture("");
     graphicTexture[button_4] = createTexture("");
@@ -83,53 +83,49 @@ int main(int argc, char* argv[])
 
 
     int buttons_total = 20;
+    SDL_Rect src[buttons_total];
+    SDL_Rect dst[buttons_total];
     int src_button_width = src_Background.w / 4;
     int src_button_height = src_Background.h / 5;
     int dst_button_width = window_width / 4;
     int dst_button_height = window_height / 5;
-    SDL_Rect src[buttons_total];
-    SDL_Rect dst[buttons_total];
 
-    //set button dimensions and default coordinates
+
+    //set button dimensions and default coordinate
     for (int i=0; i<buttons_total; i++)
     {
         src[i].w = src_button_width;
         src[i].h = src_button_height;
-        src[i].x = 0;
-        src[i].y = 0;
-
         dst[i].w = dst_button_width;
         dst[i].h = dst_button_height;
+
+        src[i].x = 0;
+        src[i].y = 0;
         dst[i].x = 0;
         dst[i].y = 0;
     }
 
     //set button coordinates
-    for(int i=1, r=1, c=0; i<buttons_total; i++ )
+    for(int i=0, r=0, c=0; i<buttons_total; i++ )
     {
-        src[i].x = src_button_width*r;
-        dst[i].x = dst_button_width*r;
-        src[i].y = src_button_height*c;
-        dst[i].y = dst_button_height*c;
-
         if (r>3)
         {
-            r = 0;
+            r=0;
             c++;
         }
-        else r++;
 
-        cout<<src[i].x<<endl;
-        cout<<src[i].y<<endl;
-        cout<<"-------------"<<endl;
+        src[i].x = src_button_width*r;
+        src[i].y = src_button_height*c;
+        dst[i].x = dst_button_width*r;
+        dst[i].y = dst_button_height*c;
+
+        r++;
     }
-
-
-
 
     // controls annimation loop
     int close = false;
 
+    cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyright Winc***n Ltd, all rights reserved"<<endl<<endl<<"\t>\r\t";
     std::string answer_output = ("");
 
     // annimation loop
@@ -137,6 +133,7 @@ int main(int argc, char* argv[])
     {
 
         SDL_Event event;
+        int display_highl_pict;
 
         // Events management
         while (SDL_PollEvent(&event))
@@ -156,111 +153,119 @@ int main(int argc, char* argv[])
 
             case SDL_MOUSEBUTTONDOWN:
 
-                /*
-                    x1 = 0
-                    x2 = 138
-                    Button C: y1 = 0, y2 = 138
-                    Button 7: y1 = 138, y2 = 276
-                    Button 4: y1 = 276, y2 = 414
-                    Button 1: y1 = 414, y2 = 552
-                    Button 0: y1 = 552, y2 = 690
-                */
-                if (mouse_x >= 0 && mouse_x <= 138) {
-                    if (mouse_y >= 0 && mouse_y <= 138) {
-                        answer_output = "";
-                        std::cout << std::endl;
+
+                if (mouse_x >= 0 && mouse_x <= dst_button_width) {
+                    if (mouse_y >= 0 && mouse_y <= dst_button_height) {
+                        //flush screen and clear answer_output
+                        answer_output += "";
+                        system ("CLS");
+                        cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyright Winc***n Ltd, all rights reserved"<<endl<<endl<<"\t>\r\t";
+
                     }
-                    else if (mouse_y >= 138 && mouse_y <= 276) {
+                    else if (mouse_y >= dst_button_height && mouse_y <= dst_button_height*2) {
                         answer_output += '7';
-                        std::cout << '7';
+                        display_highl_pict = 4;
+                        std::cout <<""<<'7';
                     }
-                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                    else if (mouse_y >= dst_button_height*2 && mouse_y <= dst_button_height*3) {
                         answer_output += '4';
+                        display_highl_pict = 8;
                         std::cout << '4';
                     }
-                    else if (mouse_y >= 414 && mouse_y <= 552) {
+                    else if (mouse_y >= dst_button_height*3 && mouse_y <= dst_button_height*4) {
                         answer_output += '1';
+                        display_highl_pict = 12;
                         std::cout << '1';
                     }
-                    else if (mouse_y >= 552 && mouse_y <= 690) {
+                    else if (mouse_y >= dst_button_height*4 && mouse_y <= window_height) {
                         answer_output += '0';
+                        display_highl_pict = 16;
                         std::cout << '0';
                     }
                 }
 
-                /*
-                    x1 = 138
-                    x2 = 276
-                    Button 8: y1 = 138, y2 = 276
-                    Button 5: y1 = 276, y2 = 414
-                    Button 2: y1 = 414, y2 = 552
-                */
-                else if (mouse_x >= 138 && mouse_x <= 276) {
-                    if (mouse_y >= 138 && mouse_y <= 276) {
+                else if (mouse_x >= dst_button_width && mouse_x <= dst_button_width*2) {
+                    if (mouse_y >= 0 && mouse_y <= dst_button_height) {
+                        answer_output += "";
+                        display_highl_pict = 1;
+                        std::cout << " +/- ";
+                    }
+
+                    if (mouse_y >= dst_button_height && mouse_y <= dst_button_height*2) {
                         answer_output += '8';
+                        display_highl_pict = 5;
                         std::cout << '8';
                     }
-                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                    else if (mouse_y >= dst_button_height*2 && mouse_y <= dst_button_height*3) {
                         answer_output += '5';
+                        display_highl_pict = 9;
                         std::cout << '5';
                     }
-                    else if (mouse_y >= 414 && mouse_y <= 552) {
+                    else if (mouse_y >= dst_button_height*3 && mouse_y <= dst_button_height*4) {
                         answer_output += '2';
+                        display_highl_pict = 13;
                         std::cout << '2';
                     }
                 }
 
-                /*
-                    x1 = 276
-                    x2 = 414
-                    Button 9: y1 = 138, y2 = 276
-                    Button 6: y1 = 276, y2 = 414
-                    Button 3: y1 = 414, y2 = 552
-                */
-                else if (mouse_x >= 276 && mouse_x <= 414) {
-                    if (mouse_y >= 138 && mouse_y <= 276) {
+                else if (mouse_x >= dst_button_width*2 && mouse_x <= dst_button_width*3) {
+                    if (mouse_y >= 0 && mouse_y <= dst_button_height) {
+                        answer_output += "";
+                        display_highl_pict = 2;
+                        std::cout << " % ";
+                    }
+                    else if (mouse_y >= dst_button_height && mouse_y <= dst_button_height*2) {
                         answer_output += '9';
+                        display_highl_pict = 6;
                         std::cout << '9';
                     }
-                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                    else if (mouse_y >= dst_button_height*2 && mouse_y <= dst_button_height*3) {
                         answer_output += '6';
+                        display_highl_pict = 10;
                         std::cout << '6';
                     }
-                    if (mouse_y >= 414 && mouse_y <= 552) {
+                    else if (mouse_y >= dst_button_height*3 && mouse_y <= dst_button_height*4) {
                         answer_output += '3';
+                        display_highl_pict = 14;
                         std::cout << '3';
                     }
+                    else if (mouse_y >= dst_button_height*4 && mouse_y <= window_height) {
+                        answer_output += "";
+                        display_highl_pict = 18;
+                        std::cout << ",";
+                    }
                 }
 
-                /*
-                   x1 = 414
-                   x2 = 552
-                   Button /: y1 = 0, y2 = 138
-                   Button X: y1 = 138, y2 = 276
-                   Button -: y1 = 276, y2 = 414
-                   Button +: y1 = 414, y2 = 552
-                   Button =: y1 = 552, y2 = 690
-               */
-                else if (mouse_x >= 414 && mouse_x <= 552) {
-                    if (mouse_y >= 0 && mouse_y <= 138) {
+                else if (mouse_x >= dst_button_width*3 && mouse_x <= dst_button_width*4) {
+                    if (mouse_y >= 0 && mouse_y <= dst_button_height) {
                         answer_output += '/';
+                        display_highl_pict = 3;
                         std::cout << " / ";
                     }
-                    else if (mouse_y >= 138 && mouse_y <= 276) {
+                    else if (mouse_y >= dst_button_height && mouse_y <= dst_button_height*2) {
                         answer_output += 'x';
+                        display_highl_pict = 7;
                         std::cout << " x ";
                     }
-                    else if (mouse_y >= 276 && mouse_y <= 414) {
+                    else if (mouse_y >= dst_button_height*2 && mouse_y <= dst_button_height*3) {
                         answer_output += '-';
+                        display_highl_pict = 11;
                         std::cout << " - ";
                     }
-                    else if (mouse_y >= 414 && mouse_y <= 552) {
+                    else if (mouse_y >= dst_button_height*3 && mouse_y <= dst_button_height*4) {
                         answer_output += '+';
+                        display_highl_pict = 15;
                         std::cout << " + ";
+                    }
+                    else if (mouse_y >= dst_button_height*4 && mouse_y <= window_height) {
+                        answer_output += "";
+                        display_highl_pict = 19;
+                        std::cout << " = ";
                     }
 
                 }
 
+                // Jonas what is this one for???
                 if (mouse_x >= 414 && mouse_x <= 552 && mouse_y >= 552 && mouse_y <= 690) {
                     std::cout << std::endl << answer_output << std::endl;
                     answer_output = "";
@@ -294,18 +299,22 @@ int main(int argc, char* argv[])
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-        //Copy new or updated pictures into screen
-        //SDL_RenderCopy(renderer, graphicTexture[background], NULL, &dest_Background); //turn on for testing
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[0], &dst[0]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[1], &dst[1]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[2], &dst[2]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[3], &dst[3]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[4], &dst[4]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[5], &dst[5]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[6], &dst[6]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[7], &dst[7]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[8], &dst[8]);
-        SDL_RenderCopy(renderer, graphicTexture[background], &src[9], &dst[9]);
+        //-------------Copy new or updated pictures into screen---------------------------------
+
+        for(int i=0; i<buttons_total; i++ )
+        {
+            SDL_RenderCopy(renderer, graphicTexture[background], &src[i], &dst[i]);
+
+        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN && display_highl_pict>=0)
+        {
+
+            SDL_RenderCopy(renderer, graphicTexture[background2], &src[display_highl_pict], &dst[display_highl_pict]);
+        }
+
+
+        //--------------------------------------------------------------------------------------
 
 
         // triggers the double buffers
