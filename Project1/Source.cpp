@@ -124,6 +124,8 @@ int main(int argc, char* argv[])
 
     // controls annimation loop
     int close = false;
+    //mouse button state
+    bool mouse_button_pressed_state = false;;
 
     cout<<"Calcoolator 3000 ver.2.15896 beta assembly, copyrighted, all rights reserved"<<endl<<endl<<"\t>\r\t";
     std::string answer_output = ("");
@@ -151,8 +153,28 @@ int main(int argc, char* argv[])
                 close = 1;
                 break;
 
+
+            case SDL_KEYDOWN:
+
+                // keyboard API for key pressed
+                switch (event.key.keysym.scancode)
+                {
+                //Hit Esc for quit application
+                case SDL_SCANCODE_ESCAPE:
+                    close = 1;
+                    break;
+                //My own convinience for testing
+                case SDL_SCANCODE_F10:
+                    close = 1;
+                    break;
+
+                default:
+                    break;
+                }
+
             case SDL_MOUSEBUTTONDOWN:
 
+                mouse_button_pressed_state = true;
 
                 if (mouse_x >= 0 && mouse_x <= dst_button_width) {
                     if (mouse_y >= 0 && mouse_y <= dst_button_height) {
@@ -265,31 +287,26 @@ int main(int argc, char* argv[])
                     }
 
                 }
+                else{
+                    answer_output += "";
+                    display_highl_pict = -1;
+                }
 
-                // Jonas what is this one for???
+
+                // Jonas what is this one for??? Because I have no idea
                 if (mouse_x >= 414 && mouse_x <= 552 && mouse_y >= 552 && mouse_y <= 690) {
                     std::cout << std::endl << answer_output << std::endl;
                     answer_output = "";
                 }
+                break;
 
+            case SDL_MOUSEBUTTONUP:
 
-            case SDL_KEYDOWN:
+                mouse_button_pressed_state = false;
+                break;
 
-                // keyboard API for key pressed
-                switch (event.key.keysym.scancode)
-                {
-                    //Hit Esc for quit application
-                case SDL_SCANCODE_ESCAPE:
-                    close = 1;
-                    break;
-                    //My own convinience for testing
-                case SDL_SCANCODE_F10:
-                    close = 1;
-                    break;
-
-                default:
-                    break;
-                }
+            default:
+                break;
             }
 
 
@@ -308,9 +325,8 @@ int main(int argc, char* argv[])
 
         }
 
-        if (event.type == SDL_MOUSEBUTTONDOWN && display_highl_pict>=0)
+        if (mouse_button_pressed_state == true && display_highl_pict>=0)
         {
-
             SDL_RenderCopy(renderer, graphicTexture[background2], &src[display_highl_pict], &dst[display_highl_pict]);
         }
 
